@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head class="w-100 h-100">
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,31 +30,36 @@
             background-color: rgba(0, 0, 0, 0.75);
 
         }
+
+        #character-info {
+            width: 100%;
+            height: 30vh;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 1rem;
+
+        }
     </style>
 </head>
 
-<body class="w-100 h-100 d-flex align-items-center brick container">
-    <section class="d-flex text-white flex-column align-items-center w-100 col-12 bg-dark-50 p-5 rounded-4" id="gate">
-        {% if user.is_authenticated %}
-        <a href="{% url 'menu_page' %}" class="btn gate-btn btn-lg btn-outline-light w-50">
-            <h1><b>เล่นเกม</b></h1>
-        </a>
-        {% if user.is_superuser %}
-        <a href="/admin" class="btn btn-md my-1 btn-outline-light">admin</a>
-        {% endif %}
-        <hr>
-        <a href="{% url 'logout' %}" class="btn btn-md btn-outline-light">ออกจากระบบ</a>
-        {% else %}
-        <div id="not_auth" class="row w-100">
-            <div class="col-md-6 col-12 my-2">
-                <a href="{% url 'login_page' %}" class="btn btn-lg gate-btn btn-outline-light w-100">เข้าสู่ระบบ</a>
-            </div>
-            <div class="col-md-6 col-12 my-2">
-                <a href="{% url 'register_page' %}" class="btn btn-lg gate-btn btn-outline-light w-100">ลงทะเบียน</a>
+<body class="container brick d-flex flex-column pt-5 justify-content-center align-items-center">
+    <section class="row w-100 h-100">
+        <div class="col-12">
+            <div class="" id="character-info">
+                
             </div>
         </div>
-        {% endif %}
+        <div class="col-12 my-1">
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">ดันเจี้ยน</b></a>
+                <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">ภารกิจ</b></a>
+                <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">อุปกรณ์</b></a>
+                <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">ตัวละคร</b></a>
+            </div>
+            
+
+        </div>
     </section>
+
 </body>
 
 </html>

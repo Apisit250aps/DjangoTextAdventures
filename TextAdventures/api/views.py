@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 import pytz
 from PIL import Image
@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.staticfiles import finders
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
 from .models import *
@@ -126,3 +126,11 @@ def login_api(request):
         msg = 'รหัสผ่านไม่ถูกต้อง'
 
     return Response({'status': status, "message": msg})
+
+# @csrf_exempt
+# @api_view(["POST",])
+# @permission_classes((AllowAny,))
+def logout_api(request):
+    logout(request)
+    return redirect('gate_page')
+    

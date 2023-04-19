@@ -6,4 +6,5 @@ urlpatterns = [
     path("check", api.checker, name="check_api"),
     path('register', api.register_api, name='register'),
     path('login', api.login_api, name='login'),
+    path('logout', api.logout_api, name='logout'),
 ]
