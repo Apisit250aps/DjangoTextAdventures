@@ -9,6 +9,8 @@ urlpatterns = [
     
     path("get/character", api.getCharacter, name="getChar"),
     path("get/monster", api.getMonster, name="getMonster"),
+    path("get/class/test", api.Battle),
+    
     
     
     

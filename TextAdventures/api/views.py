@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 import json
 import pytz
@@ -14,7 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
 
-from .TextAdventure import *
+from .TextAdventure import CharacterInformation, MonsterTarget, ArenaBattle
 from .models import *
 from . import serializers
 
@@ -151,6 +152,7 @@ def logout_api(request):
 @api_view(["GET",])
 @permission_classes((AllowAny,))
 def getCharacter(request):
+
     try:
         user = User.objects.get(id=request.session['_auth_user_id'])
         character = Character.objects.get(user=user)
@@ -173,6 +175,7 @@ def getCharacter(request):
         })
 
     except:
+
         return Response({
             "message": "กรุณาลงชื่อเข้าใช้ระบบ หรือ ลงทะเบียน"
         })
@@ -183,10 +186,10 @@ def getCharacter(request):
 @permission_classes((AllowAny,))
 def getMonster(request):
     try:
-        monster = TextAdventures(request)
-        monster_list = monster.allMonsters()
-        return Response({"monster":monster_list})
-    except: 
+        monster_list = serializers.MonsterSerializer(
+            Monster.objects.all(), many=True).data
+        return Response(monster_list)
+    except:
         pass
 
 
@@ -194,5 +197,18 @@ def getMonster(request):
 @api_view(["GET",])
 @permission_classes((AllowAny,))
 def Battle(request):
+    print()
+    char = CharacterInformation(request)
+    monster = MonsterTarget(1)
 
-    return
+    player = char.exportToBattle()
+    target = monster.exportToBattle()
+
+    # print(player, target)
+    arena = ArenaBattle(player=player, target=target)
+
+    p = arena.setPlayer()
+    t = arena.setTarget()
+    # print(p, t)
+
+    return Response({"player": p, "playerRaw": player,  "target": t, "targetRaw": target})

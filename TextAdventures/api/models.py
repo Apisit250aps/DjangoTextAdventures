@@ -45,7 +45,7 @@ class StatusPoints(models.Model):
 class Inventory(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     items_id = models.IntegerField(blank=True)
-    unit = models.IntegerField(default=0)
+    unit = models.IntegerField(default=1)
 
 
 class Item(models.Model):
