@@ -13,7 +13,24 @@ from django.contrib.staticfiles import finders
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
+
+from .TextAdventure import *
 from .models import *
+from . import serializers
+
+
+@csrf_exempt
+@api_view(["GET",])
+@permission_classes((AllowAny,))
+def is_authenticated(request):
+    is_authenticate = False
+    try:
+        is_authenticate = '_auth_user_id' in request.session
+
+    except:
+        is_authenticate = False
+
+    return Response({"status": is_authenticate})
 
 # Create your views here.
 
@@ -31,7 +48,6 @@ def checker(request):
             status = True
         else:
             status = False
-
     elif type == 'email':
         if User.objects.filter(email=check):
             status = True
@@ -39,7 +55,7 @@ def checker(request):
             status = False
 
     elif type == 'knight':
-        if Character.objects.filter(name=check):
+        if Character.objects.filter(character_name=check):
             status = True
         else:
             status = False
@@ -62,16 +78,14 @@ def register_api(request):
     email_req = request.data['email']
     password_req = request.data['password']
 
-    # for i, o in request.data.items():
-    #     print(i, o)
-
     user_create = User.objects.create_user(
         username=username_req, email=email_req, password=password_req)
 
     if user_create:
         print("user success!")
         char_create = Character.objects.create(
-            user=user_create, name=name_req)
+            user=user_create,
+            character_name=name_req)
         if char_create:
             print("char success!")
             try:
@@ -127,10 +141,58 @@ def login_api(request):
 
     return Response({'status': status, "message": msg})
 
-# @csrf_exempt
-# @api_view(["POST",])
-# @permission_classes((AllowAny,))
+
 def logout_api(request):
     logout(request)
     return redirect('gate_page')
-    
+
+
+@csrf_exempt
+@api_view(["GET",])
+@permission_classes((AllowAny,))
+def getCharacter(request):
+    try:
+        user = User.objects.get(id=request.session['_auth_user_id'])
+        character = Character.objects.get(user=user)
+        inventory = Inventory.objects.filter(character=character)
+        status = StatusPoints.objects.filter(character=character)
+
+        character_serialized = serializers.CharacterSerializer(
+            Character.objects.filter(user=user), many=True).data
+        inventory_serialized = serializers.InventorySerializer(
+            inventory, many=True).data
+        status_serialized = serializers.StatusPointsSerializer(
+            status, many=True).data
+
+        # print(CharacterInformation(request).CharacterData())
+
+        return Response({
+            "character": character_serialized,
+            "inventory": inventory_serialized,
+            "status": status_serialized,
+        })
+
+    except:
+        return Response({
+            "message": "กรุณาลงชื่อเข้าใช้ระบบ หรือ ลงทะเบียน"
+        })
+
+
+@csrf_exempt
+@api_view(["GET",])
+@permission_classes((AllowAny,))
+def getMonster(request):
+    try:
+        monster = TextAdventures(request)
+        monster_list = monster.allMonsters()
+        return Response({"monster":monster_list})
+    except: 
+        pass
+
+
+@csrf_exempt
+@api_view(["GET",])
+@permission_classes((AllowAny,))
+def Battle(request):
+
+    return

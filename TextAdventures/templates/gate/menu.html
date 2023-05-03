@@ -36,16 +36,23 @@
             height: 30vh;
             background-color: rgba(0, 0, 0, 0.75);
             border-radius: 1rem;
-
         }
     </style>
 </head>
 
 <body class="container brick d-flex flex-column pt-5 justify-content-center align-items-center">
-    <section class="row w-100 h-100">
-        <div class="col-12">
-            <div class="" id="character-info">
-                
+    <section class="row w-100 h-100" id="menu">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <div class="row text-white" id="character-info">
+                <div class="col-12 p-3">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <h3><b>[[ character_name ]]</b></h3>
+                        <h3><b>[[ gold ]] G</b></h3>
+        
+                    </div>
+                </div>
+
+
             </div>
         </div>
         <div class="col-12 my-1">
@@ -55,11 +62,44 @@
                 <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">อุปกรณ์</b></a>
                 <a href="" class="btn btn-lg btn-outline-light w-75 my-1"><b class="display-3">ตัวละคร</b></a>
             </div>
-            
-
         </div>
     </section>
-
 </body>
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const menu = Vue.createApp({
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                character_name: null,
+                gold:null,
+
+            }
+        },
+        mounted() {
+            axios
+                .get("{% url 'getChar' %}")
+                .then((response) => {
+                    console.log("loaded")
+                    this.status = response.data['status'][0]
+                    this.inventory = response.data['inventory'][0]
+                    this.character_name = response.data['character'][0].character_name
+                    this.gold = response.data['character'][0].gold
+                    console.log(this.character)
+
+
+                })
+
+
+        },
+        methods: {
+            getCharacter() {
+
+            }
+        }
+    });
+    menu.mount("#menu")
+</script>
 
 </html>

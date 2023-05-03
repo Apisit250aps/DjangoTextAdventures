@@ -4,7 +4,15 @@ from . import views as api
 
 urlpatterns = [
     path("check", api.checker, name="check_api"),
-    path('register', api.register_api, name='register'),
-    path('login', api.login_api, name='login'),
-    path('logout', api.logout_api, name='logout'),
+    path("check/auth", api.is_authenticated, name="check_auth"),
+    
+    
+    path("get/character", api.getCharacter, name="getChar"),
+    path("get/monster", api.getMonster, name="getMonster"),
+    
+    
+    
+    path('post/auth/register', api.register_api, name='register'),
+    path('post/auth/login', api.login_api, name='login'),
+    path('post/auth/logout', api.logout_api, name='logout'),
 ]

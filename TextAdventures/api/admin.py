@@ -8,7 +8,7 @@ from . import models
 class Character(admin.ModelAdmin):
     list_display = [
         'user',
-        'name',
+        'character_name',
         'levels',
         'gold'
     ]
