@@ -26,7 +26,7 @@ class Character(models.Model):
     attack = models.IntegerField(default=10, blank=True)
     defense = models.IntegerField(default=10, blank=True)
     speed = models.IntegerField(default=10)
-    levels = models.IntegerField(default=1, blank=True)
+    levels = models.IntegerField(default=0, blank=True)
     exp = models.IntegerField(default=0)
     gold = models.IntegerField(default=0, blank=True)
     status_points = models.IntegerField(default=10, blank=True)
@@ -81,3 +81,12 @@ class Question(models.Model):
     reward_type = models.IntegerField(choices=REWARD_CHOICE)
     reward_unit = models.IntegerField()
     reward_id = models.IntegerField()
+
+
+class Battle_log(models.Model):
+    attacker = models.CharField(max_length=64)
+    attack_status = models.BooleanField()
+    protector = models.CharField(max_length=64)
+    damage = models.IntegerField()
+    time = models.TimeField(auto_now_add=True)
+    

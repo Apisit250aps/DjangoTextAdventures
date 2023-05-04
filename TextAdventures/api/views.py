@@ -198,17 +198,30 @@ def getMonster(request):
 @permission_classes((AllowAny,))
 def Battle(request):
     print()
-    char = CharacterInformation(request)
-    monster = MonsterTarget(1)
+    _player = CharacterInformation(request)
+    _monster = MonsterTarget(2)
 
-    player = char.exportToBattle()
-    target = monster.exportToBattle()
+    player = _player.exportToBattle()
+    target = _monster.exportToBattle()
 
     # print(player, target)
-    arena = ArenaBattle(player=player, target=target)
+    arena = ArenaBattle(player=_player.exportToBattle(),
+                        target=_monster.exportToBattle())
 
-    p = arena.setPlayer()
-    t = arena.setTarget()
+    # p = arena.setPlayer()
+    # t = arena.setTarget()
     # print(p, t)
+    battle = arena.BattleArena()
+    if battle['winner'] == 'player':
+        exp_drop = int(_monster.exp_drop)
+        gold_drop = int(_monster.gold_drop)
 
-    return Response({"player": p, "playerRaw": player,  "target": t, "targetRaw": target})
+        player_exp = int(_player.character_exp) + exp_drop
+        player_gold = int(_player.character_gold + gold_drop)
+        print(player_exp)
+        Character.objects.filter(user=_player.uid).update(
+            exp=player_exp, gold=player_gold)
+        
+    CharacterInformation(request).setLevel()
+
+    return Response({"playerRaw": player, "targetRaw": target, "battle": battle})
