@@ -266,6 +266,7 @@ class CharacterInformation:
             Character.objects.filter(user=self.user).update(levels=1)
 
 
+
     # print(f"now is {Character.objects.filter(user=self.user).level}")
 
 
