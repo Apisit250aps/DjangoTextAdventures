@@ -215,7 +215,6 @@ def Battle(request):
     if battle['winner'] == 'player':
         exp_drop = int(_monster.exp_drop)
         gold_drop = int(_monster.gold_drop)
-
         player_exp = int(_player.character_exp) + exp_drop
         player_gold = int(_player.character_gold + gold_drop)
         print(player_exp)
