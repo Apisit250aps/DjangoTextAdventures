@@ -1,4 +1,6 @@
 
+import time
+from asgiref.sync import sync_to_async
 from django.shortcuts import render, redirect
 import json
 import pytz
@@ -14,6 +16,7 @@ from django.contrib.staticfiles import finders
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
+import pandas as pds
 
 from .TextAdventure import CharacterInformation, MonsterTarget, ArenaBattle
 from .models import *
@@ -34,6 +37,37 @@ def is_authenticated(request):
     return Response({"status": is_authenticate})
 
 # Create your views here.
+
+
+@csrf_exempt
+@api_view(["GET",])
+@permission_classes((AllowAny,))
+def getLog(request):
+
+    log = {
+        "attacker": [],
+        "attack_status": [],
+        "protector": [],
+        "damage": []
+    }
+
+    for logs in Battle_log.objects.all():
+        log["attacker"].append(logs.attacker)
+        log["attack_status"].append(logs.attack_status)
+        log["protector"].append(logs.protector)
+        log["damage"].append(logs.damage)
+
+    battle_logs = pds.DataFrame(log)
+
+    try:
+        with pds.ExcelWriter('Battle_log.xlsx') as writer:
+            battle_logs.to_excel(writer, sheet_name="battle_logs", index=None)
+
+        status = True
+    except:
+        status = False
+
+    return Response({"status": status, "file": finders('Battle_log.xlsx')})
 
 
 @csrf_exempt
@@ -152,7 +186,7 @@ def logout_api(request):
 @api_view(["GET",])
 @permission_classes((AllowAny,))
 def getCharacter(request):
-
+    CharacterInformation(request).setLevel()
     try:
         user = User.objects.get(id=request.session['_auth_user_id'])
         character = Character.objects.get(user=user)
@@ -193,6 +227,10 @@ def getMonster(request):
         pass
 
 
+async def printf():
+    await print("love")
+
+
 @csrf_exempt
 @api_view(["GET",])
 @permission_classes((AllowAny,))
@@ -201,26 +239,52 @@ def Battle(request):
     _player = CharacterInformation(request)
     _monster = MonsterTarget(2)
 
-    player = _player.exportToBattle()
-    target = _monster.exportToBattle()
+    energy = Character.objects.get(user=_player.user)
+    print(energy.energy)
+    if energy.energy >= 3:
+        Character.objects.filter(user=_player.user).update(
+            energy=energy.energy-3)
+        player = _player.exportToBattle()
+        target = _monster.exportToBattle()
 
-    # print(player, target)
-    arena = ArenaBattle(player=_player.exportToBattle(),
-                        target=_monster.exportToBattle())
+        # print(player, target)
+        arena = ArenaBattle(player=_player.exportToBattle(),
+                            target=_monster.exportToBattle())
 
-    # p = arena.setPlayer()
-    # t = arena.setTarget()
-    # print(p, t)
-    battle = arena.BattleArena()
-    if battle['winner'] == 'player':
-        exp_drop = int(_monster.exp_drop)
-        gold_drop = int(_monster.gold_drop)
-        player_exp = int(_player.character_exp) + exp_drop
-        player_gold = int(_player.character_gold + gold_drop)
-        print(player_exp)
-        Character.objects.filter(user=_player.uid).update(
-            exp=player_exp, gold=player_gold)
+        battle = arena.BattleArena()
+        if battle['winner'] == 'player':
+            exp_drop = int(_monster.exp_drop)
+            gold_drop = int(_monster.gold_drop)
+
+            print('exp drop', exp_drop)
+            player_exp = int(_player.character_exp) + exp_drop
+            player_gold = int(_player.character_gold + gold_drop)
+            # print(player_exp)
+            Character.objects.filter(user=_player.uid).update(
+                exp=player_exp, gold=player_gold)
+
+        level_before = CharacterInformation(request).character_levels
+
+        CharacterInformation(request).setLevel()
+
+        level_after = CharacterInformation(request).character_levels
+        statusPoint_character = CharacterInformation(
+            request).character_status_point
+
+        if level_after > level_before:
+            print("Level Up")
+            statusPoint_character += 3
+            Character.objects.filter(user=_player.uid).update(
+                status_points=statusPoint_character)
+
+        else:
+            print("Not Up")
         
-    CharacterInformation(request).setLevel()
+        return Response({"status":True ,"battle": battle, "energy":Character.objects.get(user=_player.user).energy})
+    
+    else :
+        
 
-    return Response({"playerRaw": player, "targetRaw": target, "battle": battle})
+        print(Character.objects.get(user=_player.user).energy)
+
+        return Response({"status":False,"battle": "your tire", "energy":Character.objects.get(user=_player.user).energy})

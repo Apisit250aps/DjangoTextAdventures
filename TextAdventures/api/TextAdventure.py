@@ -10,7 +10,7 @@ import random as rd
 class CharacterInformation:
     def __init__(self, request):
         self.uid = request.session["_auth_user_id"]
-        # self.uid = 1
+        # self.uid = 2
         self.user = User.objects.get(id=self.uid)
         self.character = Character.objects.get(user=self.user)
         self.inventory = Inventory.objects.filter(character=self.character)
@@ -26,10 +26,12 @@ class CharacterInformation:
         self.base_speed = int(self.character.speed*self.status.agi*0.0393)
 
         #
+        
         self.character_name = self.character.character_name
         self.character_gold = self.character.gold
         self.character_exp = self.character.exp
         self.character_levels = self.character.levels
+        self.character_status_point = self.character.status_points
 
     def exportToBattle(self):
         statusValue = {
@@ -64,206 +66,208 @@ class CharacterInformation:
 
         exp = self.character_exp
         print(f"exp : {exp}")
-        if exp >= 10000000000:
-            Character.objects.filter(user=self.user).update(levels=100)
-        elif exp >= 9900000000:
-            Character.objects.filter(user=self.user).update(levels=99)
-        elif exp >= 9800000000:
-            Character.objects.filter(user=self.user).update(levels=98)
-        elif exp >= 9700000000:
-            Character.objects.filter(user=self.user).update(levels=97)
-        elif exp >= 9600000000:
-            Character.objects.filter(user=self.user).update(levels=96)
-        elif exp >= 9500000000:
-            Character.objects.filter(user=self.user).update(levels=95)
-        elif exp >= 9400000000:
-            Character.objects.filter(user=self.user).update(levels=94)
-        elif exp >= 9300000000:
-            Character.objects.filter(user=self.user).update(levels=93)
-        elif exp >= 9200000000:
-            Character.objects.filter(user=self.user).update(levels=92)
-        elif exp >= 9100000000:
-            Character.objects.filter(user=self.user).update(levels=91)
-        elif exp >= 9000000000:
-            Character.objects.filter(user=self.user).update(levels=90)
-        elif exp >= 8900000000:
-            Character.objects.filter(user=self.user).update(levels=89)
-        elif exp >= 8800000000:
-            Character.objects.filter(user=self.user).update(levels=88)
-        elif exp >= 8700000000:
-            Character.objects.filter(user=self.user).update(levels=87)
-        elif exp >= 8600000000:
-            Character.objects.filter(user=self.user).update(levels=86)
-        elif exp >= 8500000000:
-            Character.objects.filter(user=self.user).update(levels=85)
-        elif exp >= 8400000000:
-            Character.objects.filter(user=self.user).update(levels=84)
-        elif exp >= 8300000000:
-            Character.objects.filter(user=self.user).update(levels=83)
-        elif exp >= 8200000000:
-            Character.objects.filter(user=self.user).update(levels=82)
-        elif exp >= 8100000000:
-            Character.objects.filter(user=self.user).update(levels=81)
-        elif exp >= 800000000:
-            Character.objects.filter(user=self.user).update(levels=80)
-        elif exp >= 790000000:
-            Character.objects.filter(user=self.user).update(levels=79)
-        elif exp >= 780000000:
-            Character.objects.filter(user=self.user).update(levels=78)
-        elif exp >= 770000000:
-            Character.objects.filter(user=self.user).update(levels=77)
-        elif exp >= 760000000:
-            Character.objects.filter(user=self.user).update(levels=76)
-        elif exp >= 750000000:
-            Character.objects.filter(user=self.user).update(levels=75)
-        elif exp >= 740000000:
-            Character.objects.filter(user=self.user).update(levels=74)
-        elif exp >= 730000000:
-            Character.objects.filter(user=self.user).update(levels=73)
-        elif exp >= 720000000:
-            Character.objects.filter(user=self.user).update(levels=72)
-        elif exp >= 710000000:
-            Character.objects.filter(user=self.user).update(levels=71)
-        elif exp >= 700000000:
-            Character.objects.filter(user=self.user).update(levels=70)
-        elif exp >= 690000000:
-            Character.objects.filter(user=self.user).update(levels=69)
-        elif exp >= 680000000:
-            Character.objects.filter(user=self.user).update(levels=68)
-        elif exp >= 670000000:
-            Character.objects.filter(user=self.user).update(levels=67)
-        elif exp >= 660000000:
-            Character.objects.filter(user=self.user).update(levels=66)
-        elif exp >= 650000000:
-            Character.objects.filter(user=self.user).update(levels=65)
-        elif exp >= 640000000:
-            Character.objects.filter(user=self.user).update(levels=64)
-        elif exp >= 630000000:
-            Character.objects.filter(user=self.user).update(levels=63)
-        elif exp >= 620000000:
-            Character.objects.filter(user=self.user).update(levels=62)
-        elif exp >= 610000000:
-            Character.objects.filter(user=self.user).update(levels=61)
-        elif exp >= 60000000:
-            Character.objects.filter(user=self.user).update(levels=60)
-        elif exp >= 59000000:
-            Character.objects.filter(user=self.user).update(levels=59)
-        elif exp >= 58000000:
-            Character.objects.filter(user=self.user).update(levels=58)
-        elif exp >= 57000000:
-            Character.objects.filter(user=self.user).update(levels=57)
-        elif exp >= 56000000:
-            Character.objects.filter(user=self.user).update(levels=56)
-        elif exp >= 55000000:
-            Character.objects.filter(user=self.user).update(levels=55)
-        elif exp >= 54000000:
-            Character.objects.filter(user=self.user).update(levels=54)
-        elif exp >= 53000000:
-            Character.objects.filter(user=self.user).update(levels=53)
-        elif exp >= 52000000:
-            Character.objects.filter(user=self.user).update(levels=52)
-        elif exp >= 51000000:
-            Character.objects.filter(user=self.user).update(levels=51)
-        elif exp >= 5000000:
-            Character.objects.filter(user=self.user).update(levels=50)
-        elif exp >= 4900000:
-            Character.objects.filter(user=self.user).update(levels=49)
-        elif exp >= 4800000:
-            Character.objects.filter(user=self.user).update(levels=48)
-        elif exp >= 4700000:
-            Character.objects.filter(user=self.user).update(levels=47)
-        elif exp >= 4600000:
-            Character.objects.filter(user=self.user).update(levels=46)
-        elif exp >= 4500000:
-            Character.objects.filter(user=self.user).update(levels=45)
-        elif exp >= 4400000:
-            Character.objects.filter(user=self.user).update(levels=44)
-        elif exp >= 4300000:
-            Character.objects.filter(user=self.user).update(levels=43)
-        elif exp >= 4200000:
-            Character.objects.filter(user=self.user).update(levels=42)
-        elif exp >= 4100000:
-            Character.objects.filter(user=self.user).update(levels=41)
-        elif exp >= 400000:
-            Character.objects.filter(user=self.user).update(levels=40)
-        elif exp >= 390000:
-            Character.objects.filter(user=self.user).update(levels=39)
-        elif exp >= 380000:
-            Character.objects.filter(user=self.user).update(levels=38)
-        elif exp >= 370000:
-            Character.objects.filter(user=self.user).update(levels=37)
-        elif exp >= 360000:
-            Character.objects.filter(user=self.user).update(levels=36)
-        elif exp >= 350000:
-            Character.objects.filter(user=self.user).update(levels=35)
-        elif exp >= 340000:
-            Character.objects.filter(user=self.user).update(levels=34)
-        elif exp >= 330000:
-            Character.objects.filter(user=self.user).update(levels=33)
-        elif exp >= 320000:
-            Character.objects.filter(user=self.user).update(levels=32)
-        elif exp >= 310000:
-            Character.objects.filter(user=self.user).update(levels=31)
-        elif exp >= 30000:
-            Character.objects.filter(user=self.user).update(levels=30)
-        elif exp >= 29000:
-            Character.objects.filter(user=self.user).update(levels=29)
-        elif exp >= 28000:
-            Character.objects.filter(user=self.user).update(levels=28)
-        elif exp >= 27000:
-            Character.objects.filter(user=self.user).update(levels=27)
-        elif exp >= 26000:
-            Character.objects.filter(user=self.user).update(levels=26)
-        elif exp >= 25000:
-            Character.objects.filter(user=self.user).update(levels=25)
-        elif exp >= 24000:
-            Character.objects.filter(user=self.user).update(levels=24)
-        elif exp >= 23000:
-            Character.objects.filter(user=self.user).update(levels=23)
-        elif exp >= 22000:
-            Character.objects.filter(user=self.user).update(levels=22)
-        elif exp >= 21000:
-            Character.objects.filter(user=self.user).update(levels=21)
-        elif exp >= 2000:
-            Character.objects.filter(user=self.user).update(levels=20)
-        elif exp >= 1900:
-            Character.objects.filter(user=self.user).update(levels=19)
-        elif exp >= 1800:
-            Character.objects.filter(user=self.user).update(levels=18)
-        elif exp >= 1700:
-            Character.objects.filter(user=self.user).update(levels=17)
-        elif exp >= 1600:
-            Character.objects.filter(user=self.user).update(levels=16)
-        elif exp >= 1500:
-            Character.objects.filter(user=self.user).update(levels=15)
-        elif exp >= 1400:
-            Character.objects.filter(user=self.user).update(levels=14)
-        elif exp >= 1300:
-            Character.objects.filter(user=self.user).update(levels=13)
-        elif exp >= 1200:
-            Character.objects.filter(user=self.user).update(levels=12)
-        elif exp >= 1100:
-            Character.objects.filter(user=self.user).update(levels=11)
-        elif exp >= 100:
-            Character.objects.filter(user=self.user).update(levels=10)
-        elif exp >= 90:
-            Character.objects.filter(user=self.user).update(levels=9)
-        elif exp >= 80:
-            Character.objects.filter(user=self.user).update(levels=8)
-        elif exp >= 70:
-            Character.objects.filter(user=self.user).update(levels=7)
-        elif exp >= 60:
-            Character.objects.filter(user=self.user).update(levels=6)
-        elif exp >= 50:
-            Character.objects.filter(user=self.user).update(levels=5)
-        elif exp >= 40:
-            Character.objects.filter(user=self.user).update(levels=4)
-        elif exp >= 30:
-            Character.objects.filter(user=self.user).update(levels=3)
-        elif exp >= 20:
-            Character.objects.filter(user=self.user).update(levels=2)
-        elif exp >= 10:
+        
+        if exp >= 0 and exp < 10:
             Character.objects.filter(user=self.user).update(levels=1)
+        elif exp >= 10 and exp < 32:
+            Character.objects.filter(user=self.user).update(levels=2)
+        elif exp >= 32 and exp < 70:
+            Character.objects.filter(user=self.user).update(levels=3)
+        elif exp >= 70 and exp < 128:
+            Character.objects.filter(user=self.user).update(levels=4)
+        elif exp >= 128 and exp < 210:
+            Character.objects.filter(user=self.user).update(levels=5)
+        elif exp >= 210 and exp < 322:
+            Character.objects.filter(user=self.user).update(levels=6)
+        elif exp >= 322 and exp < 473:
+            Character.objects.filter(user=self.user).update(levels=7)
+        elif exp >= 473 and exp < 672:
+            Character.objects.filter(user=self.user).update(levels=8)
+        elif exp >= 672 and exp < 930:
+            Character.objects.filter(user=self.user).update(levels=9)
+        elif exp >= 930 and exp < 1262:
+            Character.objects.filter(user=self.user).update(levels=10)
+        elif exp >= 1262 and exp < 1688:
+            Character.objects.filter(user=self.user).update(levels=11)
+        elif exp >= 1688 and exp < 2230:
+            Character.objects.filter(user=self.user).update(levels=12)
+        elif exp >= 2230 and exp < 2917:
+            Character.objects.filter(user=self.user).update(levels=13)
+        elif exp >= 2917 and exp < 3787:
+            Character.objects.filter(user=self.user).update(levels=14)
+        elif exp >= 3787 and exp < 4884:
+            Character.objects.filter(user=self.user).update(levels=15)
+        elif exp >= 4884 and exp < 6265:
+            Character.objects.filter(user=self.user).update(levels=16)
+        elif exp >= 6265 and exp < 8001:
+            Character.objects.filter(user=self.user).update(levels=17)
+        elif exp >= 8001 and exp < 10182:
+            Character.objects.filter(user=self.user).update(levels=18)
+        elif exp >= 10182 and exp < 12917:
+            Character.objects.filter(user=self.user).update(levels=19)
+        elif exp >= 12917 and exp < 16347:
+            Character.objects.filter(user=self.user).update(levels=20)
+        elif exp >= 16347 and exp < 20644:
+            Character.objects.filter(user=self.user).update(levels=21)
+        elif exp >= 20644 and exp < 26025:
+            Character.objects.filter(user=self.user).update(levels=22)
+        elif exp >= 26025 and exp < 32761:
+            Character.objects.filter(user=self.user).update(levels=23)
+        elif exp >= 32761 and exp < 41191:
+            Character.objects.filter(user=self.user).update(levels=24)
+        elif exp >= 41191 and exp < 51739:
+            Character.objects.filter(user=self.user).update(levels=25)
+        elif exp >= 51739 and exp < 51947:
+            Character.objects.filter(user=self.user).update(levels=26)
+        elif exp >= 51947 and exp < 52163:
+            Character.objects.filter(user=self.user).update(levels=27)
+        elif exp >= 52163 and exp < 52387:
+            Character.objects.filter(user=self.user).update(levels=28)
+        elif exp >= 52387 and exp < 52619:
+            Character.objects.filter(user=self.user).update(levels=29)
+        elif exp >= 52619 and exp < 52859:
+            Character.objects.filter(user=self.user).update(levels=30)
+        elif exp >= 52859 and exp < 53107:
+            Character.objects.filter(user=self.user).update(levels=31)
+        elif exp >= 53107 and exp < 53363:
+            Character.objects.filter(user=self.user).update(levels=32)
+        elif exp >= 53363 and exp < 53627:
+            Character.objects.filter(user=self.user).update(levels=33)
+        elif exp >= 53627 and exp < 53899:
+            Character.objects.filter(user=self.user).update(levels=34)
+        elif exp >= 53899 and exp < 54179:
+            Character.objects.filter(user=self.user).update(levels=35)
+        elif exp >= 54179 and exp < 54467:
+            Character.objects.filter(user=self.user).update(levels=36)
+        elif exp >= 54467 and exp < 54763:
+            Character.objects.filter(user=self.user).update(levels=37)
+        elif exp >= 54763 and exp < 55067:
+            Character.objects.filter(user=self.user).update(levels=38)
+        elif exp >= 55067 and exp < 55379:
+            Character.objects.filter(user=self.user).update(levels=39)
+        elif exp >= 55379 and exp < 55699:
+            Character.objects.filter(user=self.user).update(levels=40)
+        elif exp >= 55699 and exp < 56027:
+            Character.objects.filter(user=self.user).update(levels=41)
+        elif exp >= 56027 and exp < 56363:
+            Character.objects.filter(user=self.user).update(levels=42)
+        elif exp >= 56363 and exp < 56707:
+            Character.objects.filter(user=self.user).update(levels=43)
+        elif exp >= 56707 and exp < 57059:
+            Character.objects.filter(user=self.user).update(levels=44)
+        elif exp >= 57059 and exp < 57419:
+            Character.objects.filter(user=self.user).update(levels=45)
+        elif exp >= 57419 and exp < 57787:
+            Character.objects.filter(user=self.user).update(levels=46)
+        elif exp >= 57787 and exp < 58163:
+            Character.objects.filter(user=self.user).update(levels=47)
+        elif exp >= 58163 and exp < 58547:
+            Character.objects.filter(user=self.user).update(levels=48)
+        elif exp >= 58547 and exp < 58939:
+            Character.objects.filter(user=self.user).update(levels=49)
+        elif exp >= 58939 and exp < 59339:
+            Character.objects.filter(user=self.user).update(levels=50)
+        elif exp >= 59339 and exp < 59747:
+            Character.objects.filter(user=self.user).update(levels=51)
+        elif exp >= 59747 and exp < 60163:
+            Character.objects.filter(user=self.user).update(levels=52)
+        elif exp >= 60163 and exp < 60587:
+            Character.objects.filter(user=self.user).update(levels=53)
+        elif exp >= 60587 and exp < 61019:
+            Character.objects.filter(user=self.user).update(levels=54)
+        elif exp >= 61019 and exp < 61459:
+            Character.objects.filter(user=self.user).update(levels=55)
+        elif exp >= 61459 and exp < 61907:
+            Character.objects.filter(user=self.user).update(levels=56)
+        elif exp >= 61907 and exp < 62363:
+            Character.objects.filter(user=self.user).update(levels=57)
+        elif exp >= 62363 and exp < 62827:
+            Character.objects.filter(user=self.user).update(levels=58)
+        elif exp >= 62827 and exp < 63299:
+            Character.objects.filter(user=self.user).update(levels=59)
+        elif exp >= 63299 and exp < 63779:
+            Character.objects.filter(user=self.user).update(levels=60)
+        elif exp >= 63779 and exp < 64267:
+            Character.objects.filter(user=self.user).update(levels=61)
+        elif exp >= 64267 and exp < 64763:
+            Character.objects.filter(user=self.user).update(levels=62)
+        elif exp >= 64763 and exp < 65267:
+            Character.objects.filter(user=self.user).update(levels=63)
+        elif exp >= 65267 and exp < 65779:
+            Character.objects.filter(user=self.user).update(levels=64)
+        elif exp >= 65779 and exp < 66299:
+            Character.objects.filter(user=self.user).update(levels=65)
+        elif exp >= 66299 and exp < 66827:
+            Character.objects.filter(user=self.user).update(levels=66)
+        elif exp >= 66827 and exp < 67363:
+            Character.objects.filter(user=self.user).update(levels=67)
+        elif exp >= 67363 and exp < 67907:
+            Character.objects.filter(user=self.user).update(levels=68)
+        elif exp >= 67907 and exp < 68459:
+            Character.objects.filter(user=self.user).update(levels=69)
+        elif exp >= 68459 and exp < 69019:
+            Character.objects.filter(user=self.user).update(levels=70)
+        elif exp >= 69019 and exp < 69587:
+            Character.objects.filter(user=self.user).update(levels=71)
+        elif exp >= 69587 and exp < 70163:
+            Character.objects.filter(user=self.user).update(levels=72)
+        elif exp >= 70163 and exp < 70747:
+            Character.objects.filter(user=self.user).update(levels=73)
+        elif exp >= 70747 and exp < 71339:
+            Character.objects.filter(user=self.user).update(levels=74)
+        elif exp >= 71339 and exp < 71939:
+            Character.objects.filter(user=self.user).update(levels=75)
+        elif exp >= 71939 and exp < 87057:
+            Character.objects.filter(user=self.user).update(levels=76)
+        elif exp >= 87057 and exp < 105207:
+            Character.objects.filter(user=self.user).update(levels=77)
+        elif exp >= 105207 and exp < 126998:
+            Character.objects.filter(user=self.user).update(levels=78)
+        elif exp >= 126998 and exp < 153156:
+            Character.objects.filter(user=self.user).update(levels=79)
+        elif exp >= 153156 and exp < 184555:
+            Character.objects.filter(user=self.user).update(levels=80)
+        elif exp >= 184555 and exp < 222243:
+            Character.objects.filter(user=self.user).update(levels=81)
+        elif exp >= 222243 and exp < 267479:
+            Character.objects.filter(user=self.user).update(levels=82)
+        elif exp >= 267479 and exp < 321772:
+            Character.objects.filter(user=self.user).update(levels=83)
+        elif exp >= 321772 and exp < 386933:
+            Character.objects.filter(user=self.user).update(levels=84)
+        elif exp >= 386933 and exp < 465136:
+            Character.objects.filter(user=self.user).update(levels=85)
+        elif exp >= 465136 and exp < 558989:
+            Character.objects.filter(user=self.user).update(levels=86)
+        elif exp >= 558989 and exp < 671622:
+            Character.objects.filter(user=self.user).update(levels=87)
+        elif exp >= 671622 and exp < 806791:
+            Character.objects.filter(user=self.user).update(levels=88)
+        elif exp >= 806791 and exp < 969004:
+            Character.objects.filter(user=self.user).update(levels=89)
+        elif exp >= 969004 and exp < 1163668:
+            Character.objects.filter(user=self.user).update(levels=90)
+        elif exp >= 1163668 and exp < 1280836:
+            Character.objects.filter(user=self.user).update(levels=91)
+        elif exp >= 1280836 and exp < 1409729:
+            Character.objects.filter(user=self.user).update(levels=92)
+        elif exp >= 1409729 and exp < 1551521:
+            Character.objects.filter(user=self.user).update(levels=93)
+        elif exp >= 1551521 and exp < 1707500:
+            Character.objects.filter(user=self.user).update(levels=94)
+        elif exp >= 1707500 and exp < 1879086:
+            Character.objects.filter(user=self.user).update(levels=95)
+        elif exp >= 1879086 and exp < 2067839:
+            Character.objects.filter(user=self.user).update(levels=96)
+        elif exp >= 2067839 and exp < 2275477:
+            Character.objects.filter(user=self.user).update(levels=97)
+        elif exp >= 2275477 and exp < 2503887:
+            Character.objects.filter(user=self.user).update(levels=98)
+        elif exp >= 2503887 and exp < 2755147:
+            Character.objects.filter(user=self.user).update(levels=99)
+        elif exp >= 2755147:
+            Character.objects.filter(user=self.user).update(levels=100)
+
 
 
 

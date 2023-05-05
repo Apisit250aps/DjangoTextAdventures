@@ -29,6 +29,7 @@ class Character(models.Model):
     levels = models.IntegerField(default=0, blank=True)
     exp = models.IntegerField(default=0)
     gold = models.IntegerField(default=0, blank=True)
+    energy = models.IntegerField(default=500)
     status_points = models.IntegerField(default=10, blank=True)
 
     def __str__(self):

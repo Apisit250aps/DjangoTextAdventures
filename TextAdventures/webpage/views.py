@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
+
 def is_authenticated(request):
-    try :
+    try:
         return '_auth_user_id' in request.session
-    except :
+    except:
         return False
+
 
 def index(req):
 
@@ -41,7 +43,6 @@ def Login(request):
 
     if is_authenticated(request):
         return redirect("gate_page")
-    
 
     return render(request, 'gate/login.html')
 
@@ -49,9 +50,13 @@ def Login(request):
 def Register(req):
     if is_authenticated(req):
         return redirect("gate_page")
-    
+
     return render(req, 'gate/register.html')
 
 
 def Menu(req):
     return render(req, 'gate/menu.html')
+
+
+def Character(req):
+    return render(req, 'character/character.html')
