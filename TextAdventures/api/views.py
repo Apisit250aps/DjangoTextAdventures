@@ -22,21 +22,31 @@ from .TextAdventure import CharacterInformation, MonsterTarget, ArenaBattle
 from .models import *
 from . import serializers
 
+# Check Authentication
+
 
 @csrf_exempt
 @api_view(["GET",])
 @permission_classes((AllowAny,))
 def is_authenticated(request):
     is_authenticate = False
+    is_superuser = False
     try:
         is_authenticate = '_auth_user_id' in request.session
+        if is_authenticate:
+            is_superuser = User.objects.get(
+                id=request.session['_auth_user_id']).is_superuser
 
     except:
         is_authenticate = False
 
-    return Response({"status": is_authenticate})
+    print(f"auth : {is_authenticate} superuser : {is_superuser}")
+
+    return Response({"is_authenticated": is_authenticate, "is_superuser": is_superuser})
 
 # Create your views here.
+
+# Get Battle log to Excel file
 
 
 @csrf_exempt
@@ -68,6 +78,8 @@ def getLog(request):
         status = False
 
     return Response({"status": status, "file": finders('Battle_log.xlsx')})
+
+# Checker Exist User
 
 
 @csrf_exempt
@@ -101,6 +113,8 @@ def checker(request):
     print(status)
 
     return Response({"status": status, "type": type})
+
+# Register with API
 
 
 @csrf_exempt
@@ -143,6 +157,8 @@ def register_api(request):
 
     return Response({"status": status})
 
+# Login with API
+
 
 @csrf_exempt
 @api_view(["POST",])
@@ -181,6 +197,8 @@ def logout_api(request):
     logout(request)
     return redirect('gate_page')
 
+# Get Character Information
+
 
 @csrf_exempt
 @api_view(["GET",])
@@ -214,6 +232,8 @@ def getCharacter(request):
             "message": "กรุณาลงชื่อเข้าใช้ระบบ หรือ ลงทะเบียน"
         })
 
+# Get Monster Information
+
 
 @csrf_exempt
 @api_view(["GET",])
@@ -229,6 +249,8 @@ def getMonster(request):
 
 async def printf():
     await print("love")
+
+# Main Battle
 
 
 @csrf_exempt
@@ -279,12 +301,9 @@ def Battle(request):
 
         else:
             print("Not Up")
-        
-        return Response({"status":True ,"battle": battle, "energy":Character.objects.get(user=_player.user).energy})
-    
-    else :
-        
 
+        return Response({"status": True, "battle": battle, "energy": Character.objects.get(user=_player.user).energy})
+
+    else:
         print(Character.objects.get(user=_player.user).energy)
-
-        return Response({"status":False,"battle": "your tire", "energy":Character.objects.get(user=_player.user).energy})
+        return Response({"status": False, "battle": "your tire", "energy": Character.objects.get(user=_player.user).energy})

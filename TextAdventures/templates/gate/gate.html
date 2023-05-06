@@ -9,12 +9,7 @@
     <title>Menu</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
+
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/index.js' %}"></script>
@@ -26,35 +21,126 @@
             height: 100%;
         }
 
+        body {
+            padding: auto 1rem auto 1rem;
+
+        }
+
         .bg-dark-50 {
             background-color: rgba(0, 0, 0, 0.75);
 
         }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-self: center;
+            align-content: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: white;
+            padding: auto 1rem auto 1rem;
+            margin: auto;
+        }
+
+        .logo-lg {
+            font-size: 128px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 2.5rem;
+        }
+
+        .menu {
+            padding: 1rem 5rem;
+            width: 100%;
+        }
+
+        .ui-button {
+            padding: 0.5rem;
+            border-radius: 1rem;
+            width: 50%;
+            height: 4.5rem;
+            text-align: center;
+            align-self: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bolder;
+            margin: 0.5rem;
+        }
+
+        .ui-hover {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+
+        .ui-hover:hover {
+            background-color: white;
+            border: 2px solid white;
+            color: black;
+        }
     </style>
 </head>
 
-<body class="w-100 h-100 d-flex align-items-center brick container">
-    <section class="d-flex text-white flex-column align-items-center w-100 col-12 bg-dark-50 p-5 rounded-4" id="gate">
-        {% if user.is_authenticated %}
-        <a href="{% url 'menu_page' %}" class="btn gate-btn btn-lg btn-outline-light w-50">
-            <h1><b>เล่นเกม</b></h1>
-        </a>
-        {% if user.is_superuser %}
-        <a href="/admin" class="btn btn-md my-1 btn-outline-light">admin</a>
-        {% endif %}
-        <hr>
-        <a href="{% url 'logout' %}" class="btn btn-md btn-outline-light">ออกจากระบบ</a>
-        {% else %}
-        <div id="not_auth" class="row w-100">
-            <div class="col-md-6 col-12 my-2">
-                <a href="{% url 'login_page' %}" class="btn btn-lg gate-btn btn-outline-light w-100">เข้าสู่ระบบ</a>
+<body class="brick container gate">
+    <section class="" id="gate">
+        <h1 class="logo-lg">Text Adventure</h1>
+        <div class="menu">
+            <div v-if="is_authenticated" align="center">
+                <a href="{% url 'menu_page' %}" class="nav-link text-center ui-button ui-hover">
+                    PLAY
+                </a>
+                <a href="/admin" v-if="is_superuser" class="nav-link text-center ui-button ui-hover">Admin</a>
+                <a href="{% url 'logout' %}" v-if="is_authenticated"
+                    class="nav-link text-center ui-button ui-hover">Sign out</a>
             </div>
-            <div class="col-md-6 col-12 my-2">
-                <a href="{% url 'register_page' %}" class="btn btn-lg gate-btn btn-outline-light w-100">ลงทะเบียน</a>
+            <div v-if="!is_authenticated" align="center">
+                <a href="{% url 'login_page' %}" class="nav-link text-center ui-button ui-hover">
+                    Sign in
+                </a>
+                <a href="{% url 'register_page' %}"
+                    class="nav-link text-center ui-button ui-hover">Register</a>
             </div>
         </div>
-        {% endif %}
     </section>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const gate = Vue.createApp({
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                is_authenticated: null,
+                is_superuser: null,
+            }
+        },
+        mounted() {
+            axios
+                .get("{% url 'check_auth' %}")
+                .then((response) => {
+                    console.log(response.data)
+                    this.is_authenticated = response.data["is_authenticated"]
+                    this.is_superuser = response.data["is_superuser"]
+
+                });
+        }
+
+    });
+    gate.mount("#gate")
+
+
+</script>
 
 </html>

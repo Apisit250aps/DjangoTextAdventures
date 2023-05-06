@@ -24,9 +24,7 @@ class CharacterInformation:
             self.character.defense+(
                 (self.character.defense/3.5)*(self.character.levels*(self.status.vit/0.75))))
         self.base_speed = int(self.character.speed*self.status.agi*0.0393)
-
         #
-        
         self.character_name = self.character.character_name
         self.character_gold = self.character.gold
         self.character_exp = self.character.exp
