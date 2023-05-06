@@ -199,7 +199,6 @@ def logout_api(request):
 
 # Get Character Information
 
-
 @csrf_exempt
 @api_view(["GET",])
 @permission_classes((AllowAny,))
